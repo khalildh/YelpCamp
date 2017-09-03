@@ -13,23 +13,11 @@ var express     = require('express'),
       seedDB      = require('./seeds');
 
 
-
-var DEPLOYED;
-if (String(true) == process.argv[2]) {
-  DEPLOYED = process.argv[2];
-  var user = process.argv[3];
-  var password = process.argv[4];
-  mongoose.connect("mongodb://" + user + ":" + password + "@ds123084.mlab.com:23084/yelpcampdbkhalildh", {useMongoClient: true});
-  console.log(DEPLOYED);
-} else {
-  mongoose.connect("mongodb://localhost/yelp_camp", {useMongoClient: true});
-}
-
-
 var commentRoutes = require('./routes/comments'),
     campgroundRoutes = require('./routes/campgrounds'),
     indexRoutes = require('./routes/index');
 
+mongoose.connect(process.env.YELPCAMPDBURL, {useMongoClient: true});
 mongoose.Promise = global.Promise;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -65,7 +53,7 @@ app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 
-if (DEPLOYED) {
+if (process.env.PORT != undefined) {
   app.listen(process.env.PORT, process.env.IP);
 } else {
   app.listen(server, function(){

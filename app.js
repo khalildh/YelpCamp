@@ -15,7 +15,7 @@ var express     = require('express'),
 
 
 var DEPLOYED;
-if (String(process.argv[2]) == true) {
+if (String(true) == process.argv[2]) {
   DEPLOYED = process.argv[2];
   var user = process.argv[3];
   var password = process.argv[4];

@@ -15,9 +15,14 @@ var express     = require('express'),
 
 
 var DEPLOYED;
-if (process.argv[2]) {
+if (String(process.argv[2]) == true) {
   DEPLOYED = process.argv[2];
+  var user = process.argv[3];
+  var password = process.argv[4];
+  mongoose.connect("mongodb://" + user + ":" + password + "@ds123084.mlab.com:23084/yelpcampdbkhalildh", {useMongoClient: true});
   console.log(DEPLOYED);
+} else {
+  mongoose.connect("mongodb://localhost/yelp_camp", {useMongoClient: true});
 }
 
 
@@ -25,7 +30,6 @@ var commentRoutes = require('./routes/comments'),
     campgroundRoutes = require('./routes/campgrounds'),
     indexRoutes = require('./routes/index');
 
-mongoose.connect("mongodb://localhost/yelp_camp", {useMongoClient: true});
 mongoose.Promise = global.Promise;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
